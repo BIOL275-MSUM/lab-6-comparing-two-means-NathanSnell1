@@ -1,0 +1,79 @@
+---
+title: "Lab 6 Comparing two means"
+author: "Nathan Snell"
+date: `r Sys.Date()`
+output: github_document
+---
+
+Researchers studying the number of electric fish species living in various parts of the Amazon basin were interested in whether the presence of tributaries affected the local number of electric fish species in the main rivers (Fernandes et al. 2004).
+
+They counted the number of electric fish species above and below the entrance point of a major tributary at 12 different river locations.
+
+The data is provided in your GitHub repository.
+
+For each question below, write a sentence answering the question and show the code you used to come up with the answer, if applicable.
+
+## Question A
+
+> What is the mean difference in the number of species between areas upstream and downstream of a tributary? What is the 95% confidence interval of this mean difference. Show your code and write a sentence giving your answer
+
+ANSWER
+
+The mean difference in the number of species between areas upstream and downstream of a tributary is 1.8334. The 95% confidence interval of this mean difference is -4.587031 to 8.253697.  
+
+### Load packages
+```{r}
+library(tidyverse)
+
+fish <- read_csv("chap12q19ElectricFish.csv")
+fish
+
+fish_long <- 
+  pivot_longer(fish, speciesUpstream:speciesDownstream,
+               names_to = "location",
+               values_to = "species") %>% 
+  mutate(location = str_remove(location, c("species"))) %>% 
+  print()
+
+fish_long
+
+```
+
+```{r}
+t.test(formula= species ~ location, data= fish_long)
+```
+
+## Question B
+
+> Test the hypothesis that the tributaries have no effect on the number of species of electric fish.
+
+ANSWER
+
+The t-test shows that there is no significant difference between the species and the location since P > 0.05 (t = 0.59249, df = 21.81, p = 0.5596). The difference between means falls in the 95% confidence interval. Therefore, we can say that the tributaries have no effect on the number of species of electric fish.
+```{r}
+t.test(formula= species ~ location, data= fish_long)
+```
+
+## Question C
+
+> State the assumptions that you had to make to complete parts (A) and (B). Create a graph to assess whether one of those assumptions was met.
+
+ANSWER
+
+To complete part A and B we had to assume that the scale of assumption follows an ordinal scale, the saple of the population was collected randomly, the data follows a normal curve, and equal variance between sets exists when standard deviations of samples are about equal. As you can see in the histogram, the number of species found at heach site follows a normal curve. 
+```{r}
+ggplot(data = fish_long) +
+  geom_histogram(mapping = aes(x = species), binwidth = 4,
+                 boundary = 0, closed = "left", 
+                 fill = "#C5351B", color = "black") +
+  labs(x = "Species", y = "Frequency (number of species)") +
+  scale_y_continuous(breaks = seq(0, 8, 2), limits = c(0, 8), 
+                     expand = expansion(mult = 0)) +
+  scale_x_continuous(breaks = seq(0, 36, 4), limits = c(0, 40)) +
+  theme_classic() +
+  theme(
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(color = "black", size = rel(1)))
+```
+
+
