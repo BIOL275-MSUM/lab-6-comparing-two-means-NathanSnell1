@@ -261,7 +261,8 @@ crabs %>%
     alpha = 0.5,
     position= "identity",
     na.rm = TRUE)+
-  labs(x= "Temperature", y="Frequency", fill="Type of Crab")
+  labs(x= "Temperature", y="Frequency", fill="Type of Crab")+
+  facet_wrap(~crabType)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -307,4 +308,5 @@ summary(aov_crabs)
 
 The results show that there is a significant difference of temperatures
 between crab types. We know this because the F value is not close to 1
-and the P value is smaller than 0.05.
+and the P value is smaller than 0.05. Therefore, we can reject the null
+hypothesis.
