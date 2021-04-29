@@ -146,8 +146,9 @@ ANSWER
 The t-test shows that there is no significant difference between the
 species and the location since P \> 0.05 (t = 0.59249, df = 21.81, p =
 0.5596). The difference between means falls in the 95% confidence
-interval. Therefore, we can say that the tributaries have no effect on
-the number of species of electric fish.
+interval. Therefore, we fail to reject the null hypothesis. For this
+reason we can say that the tributaries have no effect on the number of
+species of electric fish.
 
 ``` r
 t.test(formula= species ~ location, data= fish_long)
@@ -266,6 +267,20 @@ crabs %>%
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+crabs %>% 
+  ggplot(aes(x = bodyTemperature)) +
+  geom_histogram(
+    aes(fill = crabType ), 
+    bins = 15, 
+    alpha = 0.5,
+    position= "identity",
+    na.rm = TRUE)+
+  labs(x= "Temperature", y="Frequency", fill="Type of Crab")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 ### Question E
 
